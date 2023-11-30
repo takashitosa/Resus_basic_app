@@ -27,25 +27,42 @@ Widget build(BuildContext context){
     appBar: AppBar(
       title: const Text('市区町村一覧'),
     ),
+    body: FutureBuilder<void>(
+      future:Future.delayed(const Duration(seconds: 1)),
+      builder: (context, snapshot){
+        switch (snapshot.connectionState){
+          //非同期処理が完了するしたことを示す状態
+          case ConnectionState.done:
+          // 元々のListViewを移動させただけ
+          return ListView(
+            children: [
+              for (final city in cities)
+              ListTile(
+                title: Text(city),
+                subtitle: const Text('政令指定都市'),
+                trailing: const Icon(Icons.navigate_next),
+                onTap:(){
+                  Navigator.of(context).push<void>(
+                    MaterialPageRoute(
+                      builder: (context) => CityDetailPage(city: city),
+                    ),
+                  );
+                }
+              )
+            ],
+          );
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+          case ConnectionState.active:
+        }
+        //非同期処理完了までインジケーター表示
+        return const Center(
+          child:CircularProgressIndicator(),
+        );
+      },
+    )
 
 
-      body: ListView(
-        children: [
-          for (final city in cities)
-            ListTile(
-              title: Text(city),
-              subtitle: const Text('政令指定都市'),
-              trailing: const Icon(Icons.navigate_next),
-              onTap: () {
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute(
-                    builder: (context) => CityDetailPage(city: city),
-                  ),
-                );
-              },
-            ),
-        ],
-      ),
 
    );
   }
