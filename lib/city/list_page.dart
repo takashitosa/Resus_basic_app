@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart' ;
 import 'detail_page.dart';
 
-class CityListPage extends StatelessWidget {
+class CityListPage extends StatefulWidget {
+
   const CityListPage({super.key});
 
+  @override
+  State<CityListPage> createState() => _CityListPageState();
+}
+
+class _CityListPageState extends State<CityListPage> {
+  late Future<void> _future;
+
+  @override
+  void initState(){
+    super.initState();
+    _future = Future.delayed(const Duration(seconds: 3));
+  }
+  
 @override
 Widget build(BuildContext context){
   final cities = [
@@ -28,7 +42,7 @@ Widget build(BuildContext context){
       title: const Text('市区町村一覧'),
     ),
     body: FutureBuilder<void>(
-      future:Future.delayed(const Duration(seconds: 1)),
+      future: _future,
       builder: (context, snapshot){
         switch (snapshot.connectionState){
           //非同期処理が完了するしたことを示す状態
@@ -66,5 +80,4 @@ Widget build(BuildContext context){
 
    );
   }
-
 }
