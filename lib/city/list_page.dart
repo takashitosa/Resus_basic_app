@@ -12,23 +12,22 @@ class CityListPage extends StatefulWidget {
 }
 
 class _CityListPageState extends State<CityListPage> {
-  late Future<void> _future;
+  late Future<String> _citiesFuture;
 
   @override
   void initState(){
     super.initState();
-    _future = Future.delayed(const Duration(seconds: 3));
     const host = 'opendata.resas-portal.go.jp';
     const endpoint = '/api/v1/cities';
     final headers = {
       'X-API-KEY': Env.resasApiKey,
     };
-    final response = http.get(
-      Uri.https(host,endpoint),
+      _citiesFuture = http.get(
+      Uri.https(host, endpoint),
       headers: headers,
-    );
-    // ignore: avoid_print
-    print(response);
+    )
+    .then((res) => res.body);
+
   }
   
 @override
@@ -54,9 +53,11 @@ Widget build(BuildContext context){
     appBar: AppBar(
       title: const Text('市区町村一覧'),
     ),
-    body: FutureBuilder<void>(
-      future: _future,
+    body: FutureBuilder<String>(
+      future: _citiesFuture,
       builder: (context, snapshot){
+        // ignore: avoid_print
+        print(snapshot.data);
         switch (snapshot.connectionState){
           //非同期処理が完了するしたことを示す状態
           case ConnectionState.done:
