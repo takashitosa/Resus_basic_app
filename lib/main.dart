@@ -18,6 +18,9 @@ class MainApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      supportedLocales: [
+        Locale('ja'),
+      ],
       home: CityListPage(),
     );
   }
