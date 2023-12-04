@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart' ;
+import 'package:resus_basic_app/city/city.dart';
 import 'package:resus_basic_app/env.dart';
 import 'detail_page.dart';
 import 'package:http/http.dart' as http;
@@ -51,20 +52,21 @@ Widget build(BuildContext context){
           final json = jsonDecode(snapshot.data!)['result'] as List;
           //1-2. Listの各要素はkey, value構造をしているので、key:String, value:dynamicとして変換
           final items = json.cast<Map<String, dynamic>>();
+          final cities = items.map(City.fromJson).toList();
           // ListViewをListView.bulderに書き換えてitemのデータを使う
           return ListView.builder(
-            itemCount: items.length,
+            itemCount: cities.length,
             itemBuilder: (context, index) {
-              final item = items[index];
+              final city = cities[index];
               return ListTile(
-                title: Text(item['cityName'] as String),
-                subtitle: const Text('政令指定都市'),
+                title: Text(city.cityName),
+                subtitle: Text(city.bigCityFlag),
                 trailing: const Icon(Icons.navigate_next),
                 onTap: (){
                   Navigator.of(context).push<void>(
                     MaterialPageRoute(
                       builder: (context) => CityDetailPage(
-                        city: item['cityName'] as String, 
+                        city: city.cityName, 
                       ),
                     ),
                   );
