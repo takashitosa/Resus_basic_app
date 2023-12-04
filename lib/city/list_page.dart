@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart' ;
 import 'package:resus_basic_app/env.dart';
 import 'detail_page.dart';
@@ -32,23 +34,6 @@ class _CityListPageState extends State<CityListPage> {
   
 @override
 Widget build(BuildContext context){
-  final cities = [
-      '札幌市',
-      '仙台市',
-      '横浜市',
-      '川崎市',
-      '名古屋市',
-      '京都市',
-      '大阪市',
-      '堺市',
-      '神戸市',
-      '岡山市',
-      '広島市',
-      '北九州市',
-      '福岡市',
-      '熊本市',
-      '那覇市',
-      ];
   return Scaffold(
     appBar: AppBar(
       title: const Text('市区町村一覧'),
@@ -61,23 +46,31 @@ Widget build(BuildContext context){
         switch (snapshot.connectionState){
           //非同期処理が完了するしたことを示す状態
           case ConnectionState.done:
-          // 元々のListViewを移動させただけ
-          return ListView(
-            children: [
-              for (final city in cities)
-              ListTile(
-                title: Text(city),
+          //STEP4-6
+          // 1-1. snapshot.data1のresultというkeyにデータが入っているのでListとして扱う
+          final json = jsonDecode(snapshot.data!)['result'] as List;
+          //1-2. Listの各要素はkey, value構造をしているので、key:String, value:dynamicとして変換
+          final items = json.cast<Map<String, dynamic>>();
+          // ListViewをListView.bulderに書き換えてitemのデータを使う
+          return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              return ListTile(
+                title: Text(item['cityName'] as String),
                 subtitle: const Text('政令指定都市'),
                 trailing: const Icon(Icons.navigate_next),
-                onTap:(){
+                onTap: (){
                   Navigator.of(context).push<void>(
                     MaterialPageRoute(
-                      builder: (context) => CityDetailPage(city: city),
+                      builder: (context) => CityDetailPage(
+                        city: item['cityName'] as String, 
+                      ),
                     ),
                   );
-                }
-              )
-            ],
+                },
+              );
+            },
           );
           case ConnectionState.none:
           case ConnectionState.waiting:
