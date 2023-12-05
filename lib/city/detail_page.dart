@@ -62,7 +62,7 @@ class _CityDetailPageState extends State<CityDetailPage> {
                       title: Text('${item['year'].toString()}年'),
                       trailing: Text(
                         '${item['value']}円',
-                        style: const TextStyle(fontSize: 16),
+                        style: Theme.of(context).textTheme.bodyLarge,
                         ),
                     );
                   },
