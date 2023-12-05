@@ -66,7 +66,7 @@ Widget build(BuildContext context){
                   Navigator.of(context).push<void>(
                     MaterialPageRoute(
                       builder: (context) => CityDetailPage(
-                        city: city.cityName, 
+                        city: city, 
                       ),
                     ),
                   );

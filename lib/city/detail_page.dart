@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:resus_basic_app/city/city.dart';
 import 'package:resus_basic_app/env.dart';
 import 'package:http/http.dart' as http;
 import 'anual_manicipality_tax.dart';
 
 class CityDetailPage extends StatefulWidget {
   const CityDetailPage({super.key, required this.city});
-  final String city;
+  final City city;
 
   @override
   State<CityDetailPage> createState() => _CityDetailPageState();
@@ -26,8 +27,8 @@ class _CityDetailPageState extends State<CityDetailPage> {
       'X-API-KEY': Env.resasApiKey,
     };
     final param = {
-      'prefCode': '14',
-      'cityCode': '14137',
+      'prefCode': widget.city.prefCode.toString(),
+      'cityCode': widget.city.cityCode,
     };
 
     _municipalitiresTaxesFuture = http
@@ -43,7 +44,7 @@ class _CityDetailPageState extends State<CityDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.city),
+        title: Text(widget.city.cityName),
         ),
       body: FutureBuilder<String>(
         future: _municipalitiresTaxesFuture,
