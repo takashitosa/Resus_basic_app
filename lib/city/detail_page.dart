@@ -60,7 +60,10 @@ class _CityDetailPageState extends State<CityDetailPage> {
                     final item = items[index];
                     return ListTile(
                       title: Text('${item['year'].toString()}年'),
-                      trailing: Text('${item['value']}円'),
+                      trailing: Text(
+                        '${item['value']}円',
+                        style: const TextStyle(fontSize: 16),
+                        ),
                     );
                   },
                 );
