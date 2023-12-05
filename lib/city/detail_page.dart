@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:resus_basic_app/env.dart';
 import 'package:http/http.dart' as http;
 
@@ -61,7 +62,7 @@ class _CityDetailPageState extends State<CityDetailPage> {
                     return ListTile(
                       title: Text('${item['year'].toString()}年'),
                       trailing: Text(
-                        '${(item['value']as int)*1000}円',
+                        _formatTaxLabel(item['value']),
                         style: Theme.of(context).textTheme.bodyLarge,
                         ),
                     );
@@ -78,5 +79,9 @@ class _CityDetailPageState extends State<CityDetailPage> {
         },
       ),
     );
+  }
+  String _formatTaxLabel(int value){
+    final formatted = NumberFormat('#,###').format(value * 1000);
+    return '$formatted円';
   }
 }
