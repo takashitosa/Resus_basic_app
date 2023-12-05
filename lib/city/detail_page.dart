@@ -39,11 +39,18 @@ class _CityDetailPageState extends State<CityDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.city)
+        title: Text(widget.city),
         ),
-      body: Center(
-        child: Text('${widget.city}の詳細画面です'),
-        ),
+      body: FutureBuilder<String>(
+        future: _municipalitiresTaxesFuture,
+        builder:(context, snapshot) {
+          // ignore: avoid_print
+          print(snapshot.data);
+          return Center(
+            child: Text('${widget.city}の詳細画面です'),
+          );
+        },
+      ),
     );
   }
 }
