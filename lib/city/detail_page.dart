@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:resus_basic_app/env.dart';
 import 'package:http/http.dart' as http;
+import 'anual_manicipality_tax.dart';
 
 class CityDetailPage extends StatefulWidget {
   const CityDetailPage({super.key, required this.city});
@@ -54,15 +55,17 @@ class _CityDetailPageState extends State<CityDetailPage> {
                 as Map<String, dynamic>;
                 final data = result['data'] as List;
                 final items = data.cast<Map<String,dynamic>>();
+                final taxes = 
+                  items.map(AnnualMunicipalitytax.fromJson).toList();
                 return ListView.separated(
                   itemCount: items.length,
                   separatorBuilder: (context, index) =>const Divider(),
                   itemBuilder:(context,index)  {
-                    final item = items[index];
+                    final tax = taxes[index];
                     return ListTile(
-                      title: Text('${item['year'].toString()}年'),
+                      title: Text('${tax.year}年'),
                       trailing: Text(
-                        _formatTaxLabel(item['value']),
+                        _formatTaxLabel(tax.value),
                         style: Theme.of(context).textTheme.bodyLarge,
                         ),
                     );
